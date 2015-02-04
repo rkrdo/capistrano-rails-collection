@@ -36,6 +36,10 @@ require 'capistrano/rails/collection'
 
 Please note that any require should be placed in Capfile, not config/deploy.rb.
 
+## Migration Roles
+
+Like the `capistrano-rails` gem, you need to specify a [`migration_role`](https://github.com/capistrano/rails#capistranorails) to tell Capistrano which server should run the migrations (defaults to `:db`)
+
 ## Contributing
 
 1. Fork it
