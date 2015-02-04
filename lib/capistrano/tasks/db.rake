@@ -3,7 +3,7 @@ namespace :rails do
     namespace :db do
       desc 'Drops the database to an empty state'
       task :drop do
-        on primary :db do
+        on primary fetch(:migration_role) do
           within release_path do
             with rails_env: fetch(:stage) do
               execute :rake, 'db:drop'
@@ -14,7 +14,7 @@ namespace :rails do
 
       desc 'Resets the database to an empty state'
       task :reset do
-        on primary :db do
+        on primary fetch(:migration_role) do
           within release_path do
             with rails_env: fetch(:stage) do
               execute :rake, 'db:reset'
@@ -28,7 +28,7 @@ namespace :rails do
           (use db:reset to also drop the db first)
         DESC
       task :setup do
-        on primary :db do
+        on primary fetch(:migration_role) do
           within release_path do
             with rails_env: fetch(:stage) do
               execute :rake, 'db:setup'
@@ -39,7 +39,7 @@ namespace :rails do
 
       desc "Load the seed data from db/seeds.rb"
       task :seed do
-        on primary :db do
+        on primary fetch(:migration_role) do
           within release_path do
             with rails_env: fetch(:stage) do
               execute :rake, 'db:seed'
@@ -50,7 +50,7 @@ namespace :rails do
 
       desc "Migrate the database"
       task :migrate do
-        on primary :db do
+        on primary fetch(:migration_role) do
           within release_path do
             with rails_env: fetch(:stage) do
               execute :rake, 'db:migrate'
@@ -61,7 +61,7 @@ namespace :rails do
 
       desc "Rolls the schema back to the previous version"
       task :rollback do
-        on primary :db do
+        on primary fetch(:migration_role) do
           within release_path do
             with rails_env: fetch(:stage) do
               execute :rake, 'db:rollback'
@@ -70,5 +70,11 @@ namespace :rails do
         end
       end
     end
+  end
+end
+
+namespace :load do
+  task :defaults do
+    set :migration_role, fetch(:migration_role, :db)
   end
 end
